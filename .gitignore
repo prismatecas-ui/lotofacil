@@ -102,3 +102,34 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Arquivos de log específicos do projeto
+log_execucao*.txt
+*.log
+
+# Arquivos temporários e de teste na raiz
+analise_detalhada_numeros.py
+atualizar_automatico.py
+check_tables.py
+executar_migracao.py
+investigar_dados_sqlite.py
+jogar.py
+test_migration.py
+teste_integracao_modelos.py
+teste_simples.py
+relatorio_investigacao_dados.md
+
+# Ambientes virtuais específicos do projeto
+venv_lotofacil/
+venv_lotofacil_313/
+
+# Cache e arquivos temporários
+cache_concursos.json
+*.tmp
+*.temp
+
+# Backups
+backup/
+backups/
+*.bak
+*.backup
