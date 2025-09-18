@@ -1,6 +1,31 @@
+import logging
 from sklearn.model_selection import train_test_split
-
 from pandas import ExcelFile, read_excel
+
+
+def setup_logger(name, level=logging.INFO):
+    """Configura e retorna um logger para o módulo especificado.
+    
+    Args:
+        name (str): Nome do logger
+        level: Nível de log (default: INFO)
+    
+    Returns:
+        logging.Logger: Logger configurado
+    """
+    logger = logging.getLogger(name)
+    
+    if not logger.handlers:
+        # Configura o handler se ainda não existe
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(level)
+    
+    return logger
 
 
 def carregar_dados(guia='Importar_Ciclo'):

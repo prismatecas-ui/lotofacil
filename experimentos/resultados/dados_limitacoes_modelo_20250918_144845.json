@@ -1,0 +1,161 @@
+{
+  "architecture_limitations": {
+    "architecture_type": "Dense Neural Network",
+    "limitations": [],
+    "recommendations": [],
+    "complexity_score": 0,
+    "layer_types": [
+      "Dense",
+      "Dropout",
+      "BatchNormalization"
+    ],
+    "regularization": {
+      "dropout": true,
+      "batch_norm": true,
+      "l1_l2": true,
+      "early_stopping": true
+    },
+    "activation_functions": [
+      "relu",
+      "sigmoid",
+      "elu"
+    ]
+  },
+  "data_processing_limitations": {
+    "feature_engineering": {
+      "statistical_features": true,
+      "temporal_features": true,
+      "interaction_features": true,
+      "polynomial_features": false,
+      "embedding_features": false
+    },
+    "data_representation": {
+      "encoding_type": "binary_only",
+      "numerical_features": true,
+      "categorical_encoding": false,
+      "sequence_modeling": false
+    },
+    "preprocessing": {
+      "normalization": true,
+      "feature_selection": false,
+      "outlier_handling": false,
+      "missing_value_handling": false
+    },
+    "limitations": [
+      {
+        "type": "Representação Limitada",
+        "description": "Apenas codificação binária - não captura relações numéricas",
+        "severity": "Média",
+        "impact": "Perda de informações sobre proximidade e ordem dos números"
+      }
+    ],
+    "recommendations": [
+      {
+        "type": "Representação",
+        "suggestion": "Adicionar embeddings, codificação ordinal ou features numéricas"
+      }
+    ]
+  },
+  "training_limitations": {
+    "optimization": {
+      "type": "adam",
+      "custom_params": true,
+      "learning_rate_schedule": true
+    },
+    "validation": {
+      "type": "simple_split",
+      "cross_validation": false,
+      "temporal_validation": false,
+      "stratified": false
+    },
+    "metrics": [
+      "accuracy",
+      "precision",
+      "recall",
+      "f1",
+      "roc"
+    ],
+    "callbacks": {
+      "early_stopping": true,
+      "model_checkpoint": true,
+      "reduce_lr": true,
+      "tensorboard": true,
+      "csv_logger": false
+    },
+    "limitations": [
+      {
+        "type": "Validação Simples",
+        "description": "Apenas split treino/teste - sem validação cruzada",
+        "severity": "Alta",
+        "impact": "Estimativa não confiável da performance real"
+      }
+    ],
+    "recommendations": [
+      {
+        "type": "Validação",
+        "suggestion": "Implementar validação cruzada temporal ou estratificada"
+      }
+    ]
+  },
+  "evaluation_limitations": {
+    "metrics_quality": {
+      "domain_specific": true,
+      "multiple_metrics": true,
+      "statistical_tests": false,
+      "confidence_intervals": true
+    },
+    "validation_approach": {
+      "temporal_validation": false,
+      "cross_validation": false,
+      "holdout_validation": true,
+      "bootstrap": false
+    },
+    "performance_analysis": {
+      "statistical_significance": false,
+      "error_analysis": true,
+      "feature_importance": true,
+      "learning_curves": false
+    },
+    "limitations": [
+      {
+        "type": "Validação Temporal Ausente",
+        "description": "Não considera a natureza temporal dos dados de loteria",
+        "severity": "Alta",
+        "impact": "Superestimação da performance em dados futuros"
+      },
+      {
+        "type": "Análise Estatística Insuficiente",
+        "description": "Falta de testes de significância estatística",
+        "severity": "Média",
+        "impact": "Incerteza sobre a confiabilidade dos resultados"
+      }
+    ],
+    "recommendations": [
+      {
+        "type": "Validação Temporal",
+        "suggestion": "Implementar validação com janela deslizante temporal"
+      }
+    ]
+  },
+  "scalability_limitations": {
+    "computational_efficiency": {
+      "optimized_operations": true,
+      "gpu_utilization": false,
+      "memory_optimization": false,
+      "jit_compilation": true
+    },
+    "memory_usage": {
+      "memory_efficient": true,
+      "data_loading": false,
+      "memory_monitoring": false
+    },
+    "model_size": {
+      "estimated_parameters": 78528,
+      "estimated_size": 0.299560546875,
+      "size_category": "small"
+    },
+    "inference_speed": [],
+    "limitations": [],
+    "recommendations": []
+  }
+}

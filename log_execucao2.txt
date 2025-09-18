@@ -1,0 +1,46 @@
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:cache_service:Thread de limpeza automßtica iniciada
+INFO:caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+2025-09-18 12:34:53.706808: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-09-18 12:34:59.640732: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:api.caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+INFO:caixa_api:SessÒo HTTP configurada com autenticaþÒo e retry automßtico
+2025-09-18 12:35:03,194 - sistema_lotofacil - ERROR - Erro na atualizaþÒo: 'charmap' codec can't encode character '\U0001f504' in position 2: character maps to <undefined>
+ERROR:sistema_lotofacil:Erro na atualizaþÒo: 'charmap' codec can't encode character '\U0001f504' in position 2: character maps to <undefined>
+Traceback (most recent call last):
+  File "C:\Users\braulio.augusto\Documents\Git\lotofacil\jogar.py", line 74, in atualizar_dados
+    print("\n\U0001f504 Verificando atualizaþ§es...")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f504' in position 2: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\braulio.augusto\Documents\Git\lotofacil\jogar.py", line 307, in main
+    sistema.executar()
+  File "C:\Users\braulio.augusto\Documents\Git\lotofacil\jogar.py", line 217, in executar
+    self.atualizar_dados()
+  File "C:\Users\braulio.augusto\Documents\Git\lotofacil\jogar.py", line 86, in atualizar_dados
+    print(f"\u26a0\ufe0f  Erro na atualizaþÒo: {e}")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>
+
+============================================================
+[*] SISTEMA LOTOFACIL MODERNIZADO v2.0
+============================================================
+
+[ERROR] Erro inesperado: 'charmap' codec can't encode characters in position 0-1: character maps to <undefined>

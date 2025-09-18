@@ -1,4 +1,10 @@
 requests
-Keras
+tensorflow
 pandas
 scikit_learn
+schedule
+numpy
+scipy
+joblib
+matplotlib
+seaborn

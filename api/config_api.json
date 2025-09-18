@@ -1,0 +1,70 @@
+{
+  "api": {
+    "host": "0.0.0.0",
+    "port": 5000,
+    "debug": false,
+    "threaded": true,
+    "max_workers": 4
+  },
+  "cache": {
+    "max_size": 1000,
+    "ttl_seconds": 300,
+    "enabled": true
+  },
+  "modelos": {
+    "tensorflow_basico": {
+      "tipo": "tensorflow",
+      "ativo": true,
+      "preload": true,
+      "caminho": "./modelo/modelos_salvos/tensorflow_basico.h5"
+    },
+    "algoritmos_avancados": {
+      "tipo": "algoritmos_avancados",
+      "ativo": true,
+      "preload": false,
+      "caminho": null
+    },
+    "analise_padroes": {
+      "tipo": "analise_padroes",
+      "ativo": true,
+      "preload": false,
+      "caminho": null
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "api_predicoes.log",
+    "max_size_mb": 10,
+    "backup_count": 5
+  },
+  "seguranca": {
+    "rate_limit": {
+      "enabled": true,
+      "requests_per_minute": 60,
+      "requests_per_hour": 1000
+    },
+    "cors": {
+      "enabled": true,
+      "origins": ["*"],
+      "methods": ["GET", "POST"],
+      "headers": ["Content-Type", "Authorization"]
+    }
+  },
+  "monitoramento": {
+    "metricas_enabled": true,
+    "historico_max_size": 1000,
+    "estatisticas_intervalo_segundos": 60
+  },
+  "dados": {
+    "fonte_principal": "./base/dados_lotofacil.xlsx",
+    "fonte_backup": "./base/dados_lotofacil_backup.xlsx",
+    "auto_update": true,
+    "update_interval_hours": 24
+  },
+  "predicoes": {
+    "batch_max_size": 100,
+    "timeout_seconds": 30,
+    "confianca_minima": 0.1,
+    "numeros_por_predicao": 15
+  }
+}

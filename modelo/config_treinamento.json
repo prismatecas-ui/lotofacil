@@ -1,0 +1,46 @@
+{
+  "agendamento": {
+    "treinar_diariamente": true,
+    "hora_treinamento": "02:00",
+    "treinar_semanalmente": true,
+    "dia_semana": "sunday",
+    "retreinar_automatico": true,
+    "intervalo_retreino_dias": 7
+  },
+  "modelos": {
+    "tensorflow_basico": {
+      "ativo": true,
+      "epochs": 100,
+      "batch_size": 32,
+      "validation_split": 0.2,
+      "early_stopping_patience": 10
+    },
+    "algoritmos_avancados": {
+      "ativo": true,
+      "modelos": ["random_forest", "xgboost", "lstm", "cnn"]
+    },
+    "analise_padroes": {
+      "ativo": true,
+      "clusters": 8,
+      "pca_components": 10
+    }
+  },
+  "otimizacao": {
+    "hyperparameter_tuning": true,
+    "auto_feature_selection": true,
+    "ensemble_models": true,
+    "performance_threshold": 0.75
+  },
+  "dados": {
+    "fonte_principal": "./base/base_dados.xlsx",
+    "fonte_cache": "./base/cache_concursos.json",
+    "database_sqlite": "./database/lotofacil.db",
+    "min_registros": 100,
+    "test_size": 0.2
+  },
+  "notificacoes": {
+    "email_ativo": false,
+    "log_detalhado": true,
+    "salvar_metricas": true
+  }
+}

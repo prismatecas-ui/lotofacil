@@ -1,0 +1,312 @@
+{
+  "sistema_backup": {
+    "versao": "1.0",
+    "nome": "Sistema de Backup e Versionamento - Lotofácil",
+    "descricao": "Configuração completa do sistema de backup e versionamento de modelos"
+  },
+  "diretorios": {
+    "base": "./backups_modelos",
+    "modelos": "./backups_modelos/modelos",
+    "metadados": "./backups_modelos/metadados",
+    "backups_comprimidos": "./backups_modelos/backups_comprimidos",
+    "relatorios": "./backups_modelos/relatorios",
+    "logs": "./backups_modelos/logs"
+  },
+  "banco_dados": {
+    "arquivo": "./backups_modelos/versionamento.db",
+    "backup_db": true,
+    "intervalo_backup_db_horas": 24
+  },
+  "versionamento": {
+    "esquema": "semantico",
+    "formato_versao": "major.minor.patch",
+    "versao_inicial": "1.0.0",
+    "auto_incremento": {
+      "patch": {
+        "descricao": "Correções e ajustes menores",
+        "triggers": ["bug_fix", "performance_improvement", "minor_update"]
+      },
+      "minor": {
+        "descricao": "Novas funcionalidades compatíveis",
+        "triggers": ["new_feature", "enhancement", "algorithm_update"]
+      },
+      "major": {
+        "descricao": "Mudanças incompatíveis ou arquiteturais",
+        "triggers": ["breaking_change", "architecture_change", "major_refactor"]
+      }
+    }
+  },
+  "backup_automatico": {
+    "habilitado": true,
+    "intervalo_horas": 6,
+    "horarios_execucao": ["02:00", "08:00", "14:00", "20:00"],
+    "dias_semana": [1, 2, 3, 4, 5, 6, 7],
+    "diretorios_monitorados": [
+      "./modelo",
+      "./models",
+      "./algoritmos"
+    ],
+    "extensoes_monitoradas": [".h5", ".pkl", ".joblib", ".json", ".pb", ".onnx"],
+    "ignorar_arquivos": [
+      "temp_*",
+      "*.tmp",
+      "*_backup*",
+      "test_*"
+    ]
+  },
+  "compressao": {
+    "habilitada": true,
+    "algoritmo": "ZIP_DEFLATED",
+    "nivel_compressao": 6,
+    "incluir_metadados": true,
+    "incluir_dependencias": true,
+    "incluir_codigo_fonte": false
+  },
+  "retencao": {
+    "politica": "hibrida",
+    "configuracoes": {
+      "manter_sempre": {
+        "versoes_major": true,
+        "versoes_tagged": true,
+        "versoes_producao": true
+      },
+      "por_tempo": {
+        "ultimos_7_dias": "todas",
+        "ultimos_30_dias": "diarias",
+        "ultimos_90_dias": "semanais",
+        "ultimos_365_dias": "mensais",
+        "mais_antigos": "anuais"
+      },
+      "por_quantidade": {
+        "minimo_versoes_por_modelo": 5,
+        "maximo_versoes_por_modelo": 50,
+        "maximo_versoes_total": 500
+      }
+    }
+  },
+  "tipos_modelo": {
+    "tensorflow": {
+      "extensoes": [".h5", ".pb", ".tflite"],
+      "metadados_extras": ["arquitetura", "otimizador", "loss_function"],
+      "validacao": true
+    },
+    "sklearn": {
+      "extensoes": [".pkl", ".joblib"],
+      "metadados_extras": ["algoritmo", "parametros", "feature_names"],
+      "validacao": true
+    },
+    "xgboost": {
+      "extensoes": [".json", ".ubj", ".pkl"],
+      "metadados_extras": ["num_trees", "max_depth", "learning_rate"],
+      "validacao": true
+    },
+    "lightgbm": {
+      "extensoes": [".txt", ".pkl"],
+      "metadados_extras": ["num_leaves", "feature_fraction", "bagging_fraction"],
+      "validacao": true
+    },
+    "pytorch": {
+      "extensoes": [".pth", ".pt"],
+      "metadados_extras": ["arquitetura", "estado_otimizador", "epoca"],
+      "validacao": true
+    },
+    "onnx": {
+      "extensoes": [".onnx"],
+      "metadados_extras": ["versao_onnx", "provedor", "inputs_outputs"],
+      "validacao": true
+    }
+  },
+  "metricas_obrigatorias": {
+    "classificacao": [
+      "accuracy",
+      "precision",
+      "recall",
+      "f1_score",
+      "auc_roc"
+    ],
+    "regressao": [
+      "mse",
+      "rmse",
+      "mae",
+      "r2_score"
+    ],
+    "lotofacil_especificas": [
+      "acertos_15",
+      "acertos_14",
+      "acertos_13",
+      "acertos_12",
+      "acertos_11",
+      "taxa_acerto_media",
+      "precisao_numeros_frequentes",
+      "cobertura_padroes"
+    ]
+  },
+  "validacao": {
+    "habilitada": true,
+    "verificar_integridade": true,
+    "verificar_hash": true,
+    "verificar_tamanho": true,
+    "verificar_metadados": true,
+    "teste_carregamento": true,
+    "timeout_validacao_segundos": 300
+  },
+  "notificacoes": {
+    "habilitadas": true,
+    "tipos": {
+      "backup_criado": {
+        "habilitado": true,
+        "nivel": "info"
+      },
+      "backup_falhou": {
+        "habilitado": true,
+        "nivel": "error"
+      },
+      "limpeza_executada": {
+        "habilitado": true,
+        "nivel": "info"
+      },
+      "espaco_disco_baixo": {
+        "habilitado": true,
+        "nivel": "warning",
+        "limite_mb": 1000
+      },
+      "versao_major_criada": {
+        "habilitado": true,
+        "nivel": "info"
+      }
+    },
+    "canais": {
+      "log_arquivo": {
+        "habilitado": true,
+        "arquivo": "./backups_modelos/logs/backup_system.log",
+        "rotacao": true,
+        "max_tamanho_mb": 10,
+        "max_arquivos": 5
+      },
+      "console": {
+        "habilitado": true,
+        "nivel_minimo": "info"
+      },
+      "email": {
+        "habilitado": false,
+        "servidor_smtp": "",
+        "porta": 587,
+        "usuario": "",
+        "senha": "",
+        "destinatarios": [],
+        "apenas_erros": true
+      }
+    }
+  },
+  "seguranca": {
+    "criptografia": {
+      "habilitada": false,
+      "algoritmo": "AES-256",
+      "chave_arquivo": "./backups_modelos/.encryption_key"
+    },
+    "controle_acesso": {
+      "habilitado": false,
+      "usuarios_autorizados": [],
+      "log_acessos": true
+    },
+    "assinatura_digital": {
+      "habilitada": false,
+      "algoritmo": "SHA-256",
+      "incluir_timestamp": true
+    }
+  },
+  "performance": {
+    "threads_backup": 2,
+    "threads_compressao": 2,
+    "buffer_size_mb": 64,
+    "cache_metadados": true,
+    "cache_size_mb": 128,
+    "timeout_operacao_segundos": 600
+  },
+  "integracao": {
+    "git": {
+      "habilitada": false,
+      "auto_commit": false,
+      "branch_backups": "backups",
+      "incluir_hash_commit": true
+    },
+    "cloud_storage": {
+      "habilitado": false,
+      "provedor": "",
+      "bucket": "",
+      "credenciais": "",
+      "sincronizacao_automatica": false
+    },
+    "webhook": {
+      "habilitado": false,
+      "url": "",
+      "eventos": ["backup_criado", "backup_falhou"],
+      "timeout_segundos": 30
+    }
+  },
+  "relatorios": {
+    "habilitados": true,
+    "frequencia": "diario",
+    "horario_geracao": "23:30",
+    "incluir_graficos": true,
+    "formatos": ["json", "html", "pdf"],
+    "metricas_incluir": [
+      "total_versoes",
+      "total_modelos",
+      "tamanho_total",
+      "crescimento_semanal",
+      "modelos_mais_versionados",
+      "tipos_modelo_distribuicao",
+      "operacoes_recentes",
+      "status_sistema"
+    ],
+    "historico_manter_dias": 90
+  },
+  "manutencao": {
+    "verificacao_integridade": {
+      "habilitada": true,
+      "frequencia": "semanal",
+      "dia_semana": 7,
+      "horario": "01:00"
+    },
+    "otimizacao_banco": {
+      "habilitada": true,
+      "frequencia": "mensal",
+      "dia_mes": 1,
+      "horario": "02:00"
+    },
+    "limpeza_temporarios": {
+      "habilitada": true,
+      "frequencia": "diario",
+      "horario": "03:00",
+      "idade_maxima_horas": 24
+    }
+  },
+  "desenvolvimento": {
+    "modo_debug": false,
+    "log_detalhado": false,
+    "preservar_temporarios": false,
+    "bypass_validacao": false,
+    "mock_operacoes": false
+  },
+  "ambiente": {
+    "producao": {
+      "backup_automatico": true,
+      "validacao_rigorosa": true,
+      "notificacoes_completas": true,
+      "retencao_estendida": true
+    },
+    "desenvolvimento": {
+      "backup_automatico": false,
+      "validacao_basica": true,
+      "notificacoes_minimas": true,
+      "retencao_reduzida": true
+    },
+    "teste": {
+      "backup_automatico": false,
+      "validacao_desabilitada": true,
+      "notificacoes_desabilitadas": true,
+      "retencao_minima": true
+    }
+  }
+}

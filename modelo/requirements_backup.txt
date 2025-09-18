@@ -1,0 +1,67 @@
+# Requisitos para Sistema de Backup e Versionamento - Lotofácil
+# Versão: 1.0.0
+# Data: 2024
+
+# Dependências principais
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+tensorflow>=2.8.0
+xgboost>=1.5.0
+lightgbm>=3.3.0
+
+# Agendamento e automação
+schedule>=1.2.0
+apscheduler>=3.9.0
+
+# Manipulação de arquivos e compressão
+pathlibplus>=0.1.0
+zipfile38>=0.0.3
+
+# Logging e monitoramento
+loguru>=0.6.0
+psutil>=5.8.0
+watchdog>=2.1.0
+
+# Serialização e persistência
+joblib>=1.1.0
+pickle5>=0.0.12
+dill>=0.3.4
+
+# Validação e hash
+hashlib2>=1.0.0
+filehash>=0.1.0
+
+# Configuração e ambiente
+python-dotenv>=0.19.0
+pyyaml>=6.0
+toml>=0.10.2
+
+# Utilitários de sistema
+click>=8.0.0
+rich>=12.0.0
+tqdm>=4.62.0
+
+# Segurança (opcional)
+cryptography>=3.4.0
+
+# Testes (desenvolvimento)
+pytest>=6.2.0
+pytest-cov>=3.0.0
+pytest-mock>=3.6.0
+
+# Análise de código (desenvolvimento)
+flake8>=4.0.0
+black>=22.0.0
+isort>=5.10.0
+mypy>=0.910
+
+# Documentação (desenvolvimento)
+sphinx>=4.0.0
+sphinx-rtd-theme>=1.0.0
+
+# Dependências específicas do projeto
+# (adicionar conforme necessário)
+
+# Nota: Algumas dependências podem já estar instaladas
+# pelo requirements.txt principal do projeto
