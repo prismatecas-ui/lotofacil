@@ -1,0 +1,122 @@
+{
+  "timestamp": "20250919_083200",
+  "sistema": "Predição Integrada - 66 Features",
+  "jogos": [
+    {
+      "numeros": [
+        15,
+        1,
+        23,
+        8,
+        3,
+        6,
+        22,
+        14,
+        12,
+        25,
+        19,
+        17,
+        10,
+        21,
+        4
+      ],
+      "probabilidade": 75.0,
+      "tipo": "inteligente",
+      "tentativa": 6536
+    },
+    {
+      "numeros": [
+        19,
+        24,
+        7,
+        21,
+        3,
+        9,
+        8,
+        6,
+        22,
+        10,
+        13,
+        18,
+        11,
+        20,
+        5
+      ],
+      "probabilidade": 75.0,
+      "tipo": "complementar"
+    },
+    {
+      "numeros": [
+        16,
+        22,
+        20,
+        2,
+        18,
+        5,
+        13,
+        6,
+        15,
+        19,
+        10,
+        7,
+        21,
+        3,
+        9
+      ],
+      "probabilidade": 75.0,
+      "tipo": "complementar"
+    },
+    {
+      "numeros": [
+        8,
+        4,
+        24,
+        5,
+        13,
+        10,
+        18,
+        21,
+        15,
+        9,
+        17,
+        19,
+        11,
+        16,
+        20
+      ],
+      "probabilidade": 75.0,
+      "tipo": "complementar"
+    },
+    {
+      "numeros": [
+        20,
+        1,
+        24,
+        12,
+        21,
+        7,
+        4,
+        22,
+        13,
+        3,
+        11,
+        5,
+        15,
+        9,
+        6
+      ],
+      "probabilidade": 75.0,
+      "tipo": "complementar"
+    }
+  ],
+  "estatisticas": {
+    "probabilidade_media": 75.0,
+    "jogos_inteligentes": 1,
+    "total_jogos": 5
+  },
+  "configuracao": {
+    "probabilidade_minima": 75.0,
+    "max_tentativas": 10000,
+    "features_utilizadas": 66
+  }
+}

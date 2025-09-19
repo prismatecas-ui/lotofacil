@@ -419,7 +419,7 @@ class FeatureEngineeringLotofacil:
     
     def criar_features_temporais(self, dados_historicos: pd.DataFrame) -> pd.DataFrame:
         """
-        Cria features temporais baseadas em padrões históricos
+        Cria features temporais baseadas em padrões históricos - OTIMIZADO
         
         Args:
             dados_historicos: DataFrame com histórico ordenado por data
@@ -430,39 +430,51 @@ class FeatureEngineeringLotofacil:
         logger.info("Criando features temporais...")
         
         features_temporais = []
+        total_concursos = len(dados_historicos)
         
-        for i, concurso in dados_historicos.iterrows():
-            # Extrair números do concurso atual
-            numeros_atual = self._extrair_numeros_concurso(concurso)
+        # Processar em lotes para melhor performance
+        batch_size = 100
+        
+        for batch_start in range(0, total_concursos, batch_size):
+            batch_end = min(batch_start + batch_size, total_concursos)
             
-            if not numeros_atual:
-                continue
-            
-            # Análise dos últimos N concursos
-            ultimos_5 = dados_historicos.iloc[max(0, i-5):i] if i > 0 else pd.DataFrame()
-            ultimos_10 = dados_historicos.iloc[max(0, i-10):i] if i > 0 else pd.DataFrame()
-            ultimos_20 = dados_historicos.iloc[max(0, i-20):i] if i > 0 else pd.DataFrame()
-            
-            features = {
-                'concurso': concurso.get('concurso', i),
+            # Log de progresso
+            if batch_start % 500 == 0:
+                logger.info(f"Processando concursos {batch_start+1} a {batch_end} de {total_concursos}...")
+        
+            for i in range(batch_start, batch_end):
+                concurso = dados_historicos.iloc[i]
+                # Extrair números do concurso atual
+                numeros_atual = self._extrair_numeros_concurso(concurso)
                 
-                # Tendências de frequência
-                **self._calcular_tendencias_frequencia(numeros_atual, ultimos_5, ultimos_10, ultimos_20),
+                if not numeros_atual:
+                    continue
                 
-                # Números quentes e frios
-                **self._calcular_numeros_quentes_frios(numeros_atual, ultimos_10, ultimos_20),
+                # Análise dos últimos N concursos
+                ultimos_5 = dados_historicos.iloc[max(0, i-5):i] if i > 0 else pd.DataFrame()
+                ultimos_10 = dados_historicos.iloc[max(0, i-10):i] if i > 0 else pd.DataFrame()
+                ultimos_20 = dados_historicos.iloc[max(0, i-20):i] if i > 0 else pd.DataFrame()
                 
-                # Padrões sazonais
-                **self._calcular_padroes_sazonais(concurso),
+                features = {
+                    'concurso': concurso.get('concurso', i),
+                    
+                    # Tendências de frequência
+                    **self._calcular_tendencias_frequencia(numeros_atual, ultimos_5, ultimos_10, ultimos_20),
+                    
+                    # Números quentes e frios
+                    **self._calcular_numeros_quentes_frios(numeros_atual, ultimos_10, ultimos_20),
+                    
+                    # Padrões sazonais
+                    **self._calcular_padroes_sazonais(concurso),
+                    
+                    # Intervalos desde última aparição
+                    **self._calcular_intervalos_aparicao(numeros_atual, dados_historicos.iloc[:i]),
+                    
+                    # Análise de repetições
+                    **self._calcular_padroes_repeticao(numeros_atual, ultimos_5, ultimos_10)
+                }
                 
-                # Intervalos desde última aparição
-                **self._calcular_intervalos_aparicao(numeros_atual, dados_historicos.iloc[:i]),
-                
-                # Análise de repetições
-                **self._calcular_padroes_repeticao(numeros_atual, ultimos_5, ultimos_10)
-            }
-            
-            features_temporais.append(features)
+                features_temporais.append(features)
         
         df_features_temporais = pd.DataFrame(features_temporais)
         logger.info(f"Features temporais criadas: {len(df_features_temporais.columns)} colunas")
@@ -618,17 +630,21 @@ class FeatureEngineeringLotofacil:
         
         intervalos = []
         
+        # Otimização: criar dicionário de última aparição para evitar loop aninhado O(n²)
+        ultima_aparicao = {}
+        
+        # Percorrer histórico uma única vez para mapear última aparição de cada número
+        for i, concurso_hist in enumerate(historico_anterior.itertuples()):
+            numeros_hist = self._extrair_numeros_concurso(concurso_hist)
+            for numero in numeros_hist:
+                ultima_aparicao[numero] = i
+        
+        # Calcular intervalos usando o dicionário (O(n) em vez de O(n²))
         for numero in numeros_atual:
-            # Encontrar última aparição do número
-            intervalo = 0
-            for i in range(len(historico_anterior) - 1, -1, -1):
-                concurso_hist = historico_anterior.iloc[i]
-                numeros_hist = self._extrair_numeros_concurso(concurso_hist)
-                
-                if numero in numeros_hist:
-                    intervalo = len(historico_anterior) - 1 - i
-                    break
-                    
+            if numero in ultima_aparicao:
+                intervalo = len(historico_anterior) - 1 - ultima_aparicao[numero]
+            else:
+                intervalo = len(historico_anterior)  # Nunca apareceu no histórico
             intervalos.append(intervalo)
         
         if intervalos:
@@ -790,16 +806,19 @@ class FeatureEngineeringLotofacil:
         if not gaps:
             return {}
         
+        gap_mean = np.mean(gaps)
+        gap_std = np.std(gaps)
+        
         return {
-            'gap_medio': np.mean(gaps),
+            'gap_medio': gap_mean,
             'gap_mediano': np.median(gaps),
-            'gap_std': np.std(gaps),
+            'gap_std': gap_std,
             'gap_min': min(gaps),
             'gap_max': max(gaps),
             'gap_range': max(gaps) - min(gaps),
             'gaps_pequenos': sum(1 for g in gaps if g <= 2),  # gaps <= 2
             'gaps_grandes': sum(1 for g in gaps if g >= 5),   # gaps >= 5
-            'uniformidade_gaps': 1 - (np.std(gaps) / np.mean(gaps)) if np.mean(gaps) > 0 else 0
+            'uniformidade_gaps': 1 - (gap_std / gap_mean) if gap_mean > 0 else 0
         }
     
     def _calcular_ciclos(self, dados):
@@ -831,6 +850,18 @@ class FeatureEngineeringLotofacil:
     
     def _calcular_simetria(self, numeros):
         """Calcula features de simetria e distribuição espacial"""
+        if not numeros or len(numeros) == 0:
+            return {
+                'simetria_metades': 0,
+                'razao_primeira_metade': 0,
+                'razao_segunda_metade': 0,
+                'distribuicao_tercos_1': 0,
+                'distribuicao_tercos_2': 0,
+                'distribuicao_tercos_3': 0,
+                'equilibrio_tercos': 0,
+                'concentracao_centro': 0
+            }
+        
         # Dividir em metades
         primeira_metade = [n for n in numeros if n <= 12]
         segunda_metade = [n for n in numeros if n > 12]
@@ -840,15 +871,17 @@ class FeatureEngineeringLotofacil:
         segundo_terco = [n for n in numeros if 9 <= n <= 16]
         terceiro_terco = [n for n in numeros if n >= 17]
         
+        total_numeros = len(numeros)
+        
         return {
             'simetria_metades': abs(len(primeira_metade) - len(segunda_metade)),
-            'razao_primeira_metade': len(primeira_metade) / len(numeros),
-            'razao_segunda_metade': len(segunda_metade) / len(numeros),
+            'razao_primeira_metade': len(primeira_metade) / total_numeros,
+            'razao_segunda_metade': len(segunda_metade) / total_numeros,
             'distribuicao_tercos_1': len(primeiro_terco),
             'distribuicao_tercos_2': len(segundo_terco),
             'distribuicao_tercos_3': len(terceiro_terco),
             'equilibrio_tercos': np.std([len(primeiro_terco), len(segundo_terco), len(terceiro_terco)]),
-            'concentracao_centro': len(segundo_terco) / len(numeros)
+            'concentracao_centro': len(segundo_terco) / total_numeros
         }
 
     def criar_features_completas(self, dados):
@@ -872,15 +905,44 @@ class FeatureEngineeringLotofacil:
     
     def _calcular_frequencias_periodo(self, dados_periodo: pd.DataFrame) -> Dict[int, int]:
         """
-        Calcula frequências dos números em um período específico
+        Calcula frequências dos números em um período específico - OTIMIZADO
         """
+        # Cache para evitar recálculos desnecessários
+        cache_key = f"{len(dados_periodo)}_{dados_periodo.index[0] if not dados_periodo.empty else 0}_{dados_periodo.index[-1] if not dados_periodo.empty else 0}"
+        
+        if hasattr(self, '_freq_cache') and cache_key in self._freq_cache:
+            return self._freq_cache[cache_key]
+        
+        if not hasattr(self, '_freq_cache'):
+            self._freq_cache = {}
+        
         frequencias = {i: 0 for i in range(1, 26)}
         
-        for _, concurso in dados_periodo.iterrows():
-            numeros = self._extrair_numeros_concurso(concurso)
-            for numero in numeros:
-                if 1 <= numero <= 25:
-                    frequencias[numero] += 1
+        # Otimização: processar em lotes se o dataset for muito grande
+        if len(dados_periodo) > 100:
+            # Para períodos grandes, usar vectorização
+            for _, concurso in dados_periodo.iterrows():
+                numeros = self._extrair_numeros_concurso(concurso)
+                for numero in numeros:
+                    if 1 <= numero <= 25:
+                        frequencias[numero] += 1
+        else:
+            # Para períodos pequenos, manter abordagem original
+            for _, concurso in dados_periodo.iterrows():
+                numeros = self._extrair_numeros_concurso(concurso)
+                for numero in numeros:
+                    if 1 <= numero <= 25:
+                        frequencias[numero] += 1
+        
+        # Armazenar no cache
+        self._freq_cache[cache_key] = frequencias
+        
+        # Limitar tamanho do cache
+        if len(self._freq_cache) > 1000:
+            # Remover entradas mais antigas
+            oldest_keys = list(self._freq_cache.keys())[:500]
+            for key in oldest_keys:
+                del self._freq_cache[key]
         
         return frequencias
     

@@ -115,21 +115,21 @@ class GerenciadorAPI:
         Verifica se todas as dependências estão disponíveis
         """
         dependencias = [
-            'flask',
-            'flask_cors',
-            'numpy',
-            'pandas',
-            'tensorflow',
-            'scikit-learn'
+            ('flask', 'flask'),
+            ('flask_cors', 'flask_cors'),
+            ('numpy', 'numpy'),
+            ('pandas', 'pandas'),
+            ('tensorflow', 'tensorflow'),
+            ('scikit-learn', 'sklearn')
         ]
         
         faltando = []
         
-        for dep in dependencias:
+        for nome_dep, modulo_import in dependencias:
             try:
-                __import__(dep.replace('-', '_'))
+                __import__(modulo_import)
             except ImportError:
-                faltando.append(dep)
+                faltando.append(nome_dep)
         
         if faltando:
             self.logger.error(f"Dependências faltando: {', '.join(faltando)}")

@@ -1,0 +1,27 @@
+{
+  "timestamp": "20250919_082834",
+  "testes_executados": 5,
+  "testes_passaram": 3,
+  "resultados": [
+    {
+      "teste": "Carregamento do Sistema",
+      "passou": true
+    },
+    {
+      "teste": "Carregamento de Dados",
+      "passou": false
+    },
+    {
+      "teste": "Predição Individual",
+      "passou": true
+    },
+    {
+      "teste": "Geração de Jogos",
+      "passou": true
+    },
+    {
+      "teste": "Validação de Jogos",
+      "passou": false
+    }
+  ]
+}

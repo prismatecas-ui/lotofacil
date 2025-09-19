@@ -1,4 +1,6 @@
 import logging
+import json
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from pandas import ExcelFile, read_excel
 
@@ -28,18 +30,48 @@ def setup_logger(name, level=logging.INFO):
     return logger
 
 
-def carregar_dados(guia='Importar_Ciclo'):
+def carregar_dados(usar_cache=True, guia='Importar_Ciclo'):
     """
-    Importando os dados da planilha do Excel gerando o dataframe da
-    base de dados.
+    Importa os dados da base de dados. Por padrão usa o cache JSON completo
+    com todos os concursos atualizados. Se usar_cache=False, usa o Excel.
 
-    :return: a base de dados.
+    :param usar_cache: Se True, usa o cache JSON com dados completos
+    :param guia: Guia do Excel (usado apenas se usar_cache=False)
+    :return: DataFrame da base de dados.
     """
-
+    
+    if usar_cache:
+        # Carrega dados do cache JSON (completo e atualizado)
+        try:
+            with open('./base/cache_concursos.json', 'r', encoding='utf-8') as f:
+                cache_data = json.load(f)
+            
+            # Converte para DataFrame
+            dados_list = []
+            for concurso_num, dados_concurso in cache_data.items():
+                dados_list.append(dados_concurso)
+            
+            dados = pd.DataFrame(dados_list)
+            
+            # Ordena por concurso
+            dados = dados.sort_values('Concurso').reset_index(drop=True)
+            
+            # Adiciona coluna 'Ganhou' baseada em Ganhadores_Sena
+            dados['Ganhou'] = (dados['Ganhadores_Sena'] > 0).astype(int)
+            
+            print(f"✅ Dados carregados do cache: {len(dados)} concursos (do {dados['Concurso'].min()} ao {dados['Concurso'].max()})")
+            return dados
+            
+        except FileNotFoundError:
+            print("⚠️  Cache não encontrado, usando Excel...")
+            # Fallback para Excel se cache não existir
+    
+    # Método original usando Excel (limitado)
     caminho = './base/base_dados.xlsx'
     planilha = ExcelFile(caminho)
     dados = read_excel(planilha, guia)
-
+    print(f"📊 Dados carregados do Excel: {len(dados)} concursos")
+    
     return dados
 
 

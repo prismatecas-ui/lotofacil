@@ -15,7 +15,7 @@ from .caixa_api import ConcursoResult
 from .cache_service import cache_service, MultiLevelCache
 from .caixa_api import CaixaAPI
 from .realtime_service import RealtimeService
-from .auto_update import AutoUpdateService
+from .auto_update import DatabaseUpdater, auto_updater
 
 # Por último as APIs
 from .api_predicoes import *
@@ -26,5 +26,6 @@ __all__ = [
     'MultiLevelCache', 
     'CaixaAPI',
     'RealtimeService',
-    'AutoUpdateService'
+    'DatabaseUpdater',
+    'auto_updater'
 ]

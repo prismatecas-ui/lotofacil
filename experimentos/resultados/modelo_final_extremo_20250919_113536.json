@@ -1,0 +1,38 @@
+{
+  "timestamp": "20250919_113536",
+  "versao": "EXTREMA",
+  "total_features_originais": 49,
+  "features_selecionadas": 49,
+  "amostras_treino": 2792,
+  "amostras_teste": 698,
+  "metricas_raw": {
+    "accuracy": 0.8108882521489972,
+    "precision": 0.6660033194883694,
+    "recall": 0.8108882521489972,
+    "f1_score": 0.731339088172355,
+    "roc_auc": 0.6176535087719299
+  },
+  "metricas_formatadas": {
+    "accuracy": "81.09%",
+    "precision": "66.60%",
+    "recall": "81.09%",
+    "f1_score": "73.13%",
+    "roc_auc": "61.77%"
+  },
+  "meta_85_90_atingida": false,
+  "meta_80_atingida": true,
+  "modelos_ensemble": [
+    "rf",
+    "gb",
+    "et"
+  ],
+  "tecnicas_aplicadas": [
+    "Feature Engineering Extrema",
+    "Seleção de Features Múltipla (KBest + RFE)",
+    "Balanceamento SMOTETomek",
+    "Normalização Robusta",
+    "Grid Search Otimização",
+    "Ensemble Voting Classifier",
+    "Validação Temporal"
+  ]
+}

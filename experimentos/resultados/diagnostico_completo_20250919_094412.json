@@ -1,0 +1,202 @@
+{
+  "timestamp": "2025-09-19T09:44:12.230880",
+  "analise_dados": {
+    "total_features": 66,
+    "numeric_features": 66,
+    "missing_values": 0,
+    "duplicates": 0,
+    "data_quality_score": 100.0,
+    "high_correlations": 14
+  },
+  "analise_modelos": {
+    "modelos_encontrados": []
+  },
+  "limitacoes_identificadas": [
+    {
+      "tipo": "Modelos Ausentes",
+      "descricao": "Nenhum modelo treinado encontrado",
+      "severidade": "Crítica"
+    },
+    {
+      "tipo": "Performance Baixa",
+      "descricao": "Score geral de 0.380 indica performance inadequada",
+      "severidade": "Alta"
+    },
+    {
+      "tipo": "Representação Limitada",
+      "descricao": "Apenas codificação binária - não captura relações numéricas",
+      "severidade": "Média",
+      "categoria": "data_processing_limitations"
+    },
+    {
+      "tipo": "Validação Simples",
+      "descricao": "Apenas split treino/teste - sem validação cruzada",
+      "severidade": "Alta",
+      "categoria": "training_limitations"
+    },
+    {
+      "tipo": "Validação Temporal Ausente",
+      "descricao": "Não considera a natureza temporal dos dados de loteria",
+      "severidade": "Alta",
+      "categoria": "evaluation_limitations"
+    },
+    {
+      "tipo": "Análise Estatística Insuficiente",
+      "descricao": "Falta de testes de significância estatística",
+      "severidade": "Média",
+      "categoria": "evaluation_limitations"
+    }
+  ],
+  "recomendacoes_otimizacao": [
+    {
+      "categoria": "Arquitetura",
+      "titulo": "Implementar Ensemble de Modelos",
+      "descricao": "Combinar múltiplos algoritmos (Random Forest, XGBoost, Neural Networks) para melhorar precisão",
+      "impacto_esperado": "15-25% melhoria na taxa de acerto",
+      "prioridade": "Alta"
+    },
+    {
+      "categoria": "Features",
+      "titulo": "Engenharia de Features Avançada",
+      "descricao": "Adicionar features temporais, padrões de sequência e análise de tendências",
+      "impacto_esperado": "10-15% melhoria na precisão",
+      "prioridade": "Alta"
+    },
+    {
+      "categoria": "Dados",
+      "titulo": "Melhorar Representação dos Dados",
+      "descricao": "Implementar embeddings e features numéricas além da codificação binária",
+      "impacto_esperado": "5-10% melhoria na capacidade preditiva",
+      "prioridade": "Média"
+    },
+    {
+      "categoria": "Validação",
+      "titulo": "Implementar Validação Cruzada Temporal",
+      "descricao": "Usar validação com janela deslizante respeitando ordem cronológica",
+      "impacto_esperado": "Estimativa mais confiável da performance real",
+      "prioridade": "Alta"
+    },
+    {
+      "categoria": "Validação",
+      "titulo": "Implementar Validação Cruzada Temporal",
+      "descricao": "Usar validação com janela deslizante respeitando ordem cronológica",
+      "impacto_esperado": "Estimativa mais confiável da performance real",
+      "prioridade": "Alta"
+    },
+    {
+      "categoria": "Algoritmo",
+      "titulo": "Implementar Gradient Boosting Otimizado",
+      "descricao": "Usar XGBoost ou LightGBM com hyperparameter tuning automático",
+      "impacto_esperado": "20-30% melhoria na taxa de acerto",
+      "prioridade": "Crítica"
+    },
+    {
+      "categoria": "Dados",
+      "titulo": "Análise de Padrões Temporais Profunda",
+      "descricao": "Implementar LSTM para capturar dependências temporais de longo prazo",
+      "impacto_esperado": "15-20% melhoria na precisão",
+      "prioridade": "Alta"
+    },
+    {
+      "categoria": "Otimização",
+      "titulo": "Hyperparameter Tuning Automático",
+      "descricao": "Usar Optuna ou Hyperopt para otimização automática de hiperparâmetros",
+      "impacto_esperado": "5-10% melhoria na performance",
+      "prioridade": "Média"
+    },
+    {
+      "categoria": "Ensemble",
+      "titulo": "Stacking de Modelos Heterogêneos",
+      "descricao": "Combinar diferentes tipos de modelos com meta-learner",
+      "impacto_esperado": "10-15% melhoria na robustez",
+      "prioridade": "Alta"
+    }
+  ],
+  "metricas_performance": {
+    "metricas_Modelo_Demonstração_20250918_145150": {
+      "model_name": "Modelo Demonstração",
+      "evaluation_date": "2025-09-18T14:51:49.839369",
+      "data_shape": {
+        "samples": 1000,
+        "features": 25
+      },
+      "basic_metrics": {
+        "accuracy": 0.4994,
+        "precision": 0.5194879094914371,
+        "recall": 0.4994,
+        "f1_score": 0.5044560193262471
+      },
+      "hit_rates": {
+        "hit_rate_11": 0.001,
+        "hit_rate_12": 0.003,
+        "hit_rate_13": 0.014,
+        "hit_rate_14": 0.041,
+        "hit_rate_15": 0.099
+      },
+      "calibration": {
+        "brier_score": 0.33409614927217307,
+        "log_loss": 1.0023311303195614,
+        "expected_calibration_error": 0.25859867142819953
+      },
+      "frequency_metrics": {
+        "frequency_correlation": -0.0921849315194514,
+        "frequency_deviation": 0.10028372409263163,
+        "hot_numbers_precision": 0.5007142857142857,
+        "cold_numbers_precision": 0.49755555555555553
+      },
+      "pattern_metrics": {
+        "odd_even_accuracy": 0.9130375350400066,
+        "dezena1_accuracy": 0.9286214397691457,
+        "dezena2_accuracy": 0.9365939356823433,
+        "dezena3_accuracy": 0.9676450843941249,
+        "avg_consecutive_true": 12.207,
+        "avg_consecutive_pred": 12.235,
+        "consecutive_accuracy": 0.9720000000000013
+      },
+      "statistical_tests": {
+        "normality_test": {
+          "statistic": 0.9533596372019775,
+          "p_value": 3.0517340723565445e-37,
+          "is_normal": "False"
+        },
+        "uniformity_test": {
+          "statistic": 0.0040000000000000036,
+          "p_value": 0.9878150463090221,
+          "is_uniform": "True"
+        },
+        "model_vs_baseline": {
+          "statistic": 313708547.0,
+          "p_value": 0.45391664498222717,
+          "model_better": "False"
+        },
+        "independence_test": {
+          "statistic": 27.23333333333333,
+          "p_value": 0.2936948227906852,
+          "degrees_freedom": 24,
+          "is_independent": "True"
+        }
+      },
+      "roi_analysis": {
+        "total_investment": 3000.0,
+        "total_return": 615,
+        "net_profit": -2385.0,
+        "roi_percentage": -79.5,
+        "break_even_rate": 1.0,
+        "hit_distribution": {
+          "hits_11": 81,
+          "hits_11_rate": 0.081,
+          "hits_12": 16,
+          "hits_12_rate": 0.016,
+          "hits_13": 2,
+          "hits_13_rate": 0.002,
+          "hits_14": 0,
+          "hits_14_rate": 0.0,
+          "hits_15": 0,
+          "hits_15_rate": 0.0
+        }
+      },
+      "overall_score": 0.38048831192475874
+    }
+  },
+  "score_geral": 0
+}

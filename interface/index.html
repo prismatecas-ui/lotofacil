@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lotofácil IA - Dashboard de Jogos Recomendados</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <button class="mobile-menu-btn" id="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <i class="fas fa-dice"></i>
+                    <h1>Lotofácil IA</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                    <a href="#predictions" class="nav-link" data-section="predictions">
+                        <i class="fas fa-crystal-ball"></i> Jogos Recomendados
+                    </a>
+                    <a href="#statistics" class="nav-link" data-section="statistics">
+                        <i class="fas fa-chart-bar"></i> Estatísticas
+                    </a>
+                    <a href="#notifications" class="nav-link" data-section="notifications">
+                        <i class="fas fa-bell"></i> Notificações
+                        <span class="notification-badge" id="notification-count">0</span>
+                    </a>
+                    <a href="#config" class="nav-link" data-section="config">
+                        <i class="fas fa-cog"></i> Configurações
+                    </a>
+                </nav>
+                <div class="header-controls">
+                    <button id="theme-toggle" class="btn-icon" title="Alternar tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="notifications-toggle" class="btn-icon" title="Notificações">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notification-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+        <!-- Overlay para mobile -->
+        <div class="mobile-overlay" id="mobile-overlay"></div>
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-chart-line"></i> Lotofácil AI</h2>
+            </div>
+        </aside>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Dashboard Principal</h2>
+                    <div class="status-indicator">
+                        <span class="status-dot" id="system-status"></span>
+                        <span id="system-status-text">Sistema Online</span>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-target"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="accuracy-rate">--</h3>
+                            <p>Taxa de Acerto</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-predictions">--</h3>
+                            <p>Jogos Gerados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="last-update">--</h3>
+                            <p>Última Atualização</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="model-confidence">--</h3>
+                            <p>Índice de Confiabilidade</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="chart-container">
+                        <h3>Performance ao Longo do Tempo</h3>
+                        <canvas id="performance-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Distribuição de Acertos</h3>
+                        <canvas id="accuracy-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Results -->
+                <div class="recent-results">
+                    <h3><i class="fas fa-history"></i> Resultados Recentes</h3>
+                    <div class="results-table-container">
+                        <table class="results-table" id="recent-results-table">
+                            <thead>
+                                <tr>
+                                    <th>Concurso</th>
+                                    <th>Data</th>
+                                    <th>Predição</th>
+                                    <th>Resultado</th>
+                                    <th>Acertos</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados carregados dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Predictions Section -->
+            <section id="predictions" class="section">
+                <h2>Gerar Jogos</h2>
+                <form id="prediction-form" class="prediction-form">
+                    <div class="form-group">
+                        <div class="number-selection">
+                            <h4>Selecionar Números (15 números)</h4>
+                            <div id="numbers-grid"></div>
+                            <div class="selection-info">
+                                <span id="selected-count">0</span>/15 números selecionados
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modelo">Modelo:</label>
+                        <select id="modelo" name="modelo" class="form-input">
+                            <option value="tensorflow_basico">TensorFlow Básico</option>
+                            <option value="algoritmos_avancados">Algoritmos Avançados</option>
+                            <option value="analise_padroes">Análise de Padrões</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="cache" checked> Usar cache para melhor performance
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Gerar Jogos</button>
+                </form>
+                
+                <div id="prediction-result" style="display: none;"></div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section id="statistics" class="section">
+                <h2>Estatísticas Detalhadas</h2>
+                
+                <!-- Status dos Modelos -->
+                <div class="stat-card">
+                    <div id="models-status"></div>
+                </div>
+                
+                <!-- Status de Saúde do Sistema -->
+                <div class="stat-card">
+                    <h3>Status do Sistema</h3>
+                    <div id="health-status"></div>
+                </div>
+                
+                <!-- Métricas em Tempo Real -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Jogos Recomendados Hoje</h3>
+                        <div class="stat-value" id="predictions-today">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Precisão Média</h3>
+                        <div class="stat-value" id="average-accuracy">0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Melhor Modelo</h3>
+                        <div class="stat-value" id="best-model">-</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Última Atualização</h3>
+                        <div class="stat-value" id="last-update">-</div>
+                    </div>
+                </div>
+
+                <!-- Gráficos Interativos -->
+                 <div class="charts-section">
+                     <h3>Análise de Performance</h3>
+                     <div class="charts-grid">
+                         <div class="chart-container">
+                             <canvas id="accuracy-chart"></canvas>
+                         </div>
+                         <div class="chart-container">
+                             <canvas id="frequency-chart"></canvas>
+                         </div>
+                         <div class="chart-container full-width">
+                             <canvas id="trends-chart"></canvas>
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- Estatísticas Detalhadas -->
+                 <div class="detailed-stats-section">
+                     <h3>Estatísticas Detalhadas</h3>
+                     
+                     <!-- Métricas por Modelo -->
+                     <div class="stats-table-container">
+                         <h4>Performance por Modelo</h4>
+                         <table class="stats-table" id="model-performance-table">
+                             <thead>
+                                 <tr>
+                                     <th>Modelo</th>
+                                     <th>Precisão (%)</th>
+                                     <th>Jogos Recomendados</th>
+                                     <th>Acertos</th>
+                                     <th>Tempo Médio (ms)</th>
+                                     <th>Status</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 <tr>
+                                     <td colspan="6" class="loading-row">Carregando dados...</td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </div>
+
+                     <!-- Histórico de Jogos Recomendados -->
+                     <div class="stats-table-container">
+                         <h4>Histórico Recente</h4>
+                         <table class="stats-table" id="predictions-history-table">
+                             <thead>
+                                 <tr>
+                                     <th>Data/Hora</th>
+                                     <th>Modelo</th>
+                                     <th>Números Preditos</th>
+                                     <th>Confiança</th>
+                                     <th>Resultado</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 <tr>
+                                     <td colspan="5" class="loading-row">Carregando histórico...</td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </div>
+
+                     <!-- Análise de Números -->
+                     <div class="numbers-analysis">
+                         <h4>Análise de Frequência dos Números</h4>
+                         <div class="analysis-grid">
+                             <div class="analysis-card">
+                                 <h5>Números Mais Frequentes</h5>
+                                 <div class="number-list" id="most-frequent-numbers">
+                                     <span class="loading-text">Carregando...</span>
+                                 </div>
+                             </div>
+                             <div class="analysis-card">
+                                 <h5>Números Menos Frequentes</h5>
+                                 <div class="number-list" id="least-frequent-numbers">
+                                     <span class="loading-text">Carregando...</span>
+                                 </div>
+                             </div>
+                             <div class="analysis-card">
+                                 <h5>Números em Tendência</h5>
+                                 <div class="number-list" id="trending-numbers">
+                                     <span class="loading-text">Carregando...</span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                
+                <div class="stats-detailed">
+                    <div class="stat-card">
+                        <h3>Precisão por Modelo</h3>
+                        <canvas id="accuracy-chart"></canvas>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Frequência dos Números</h3>
+                        <canvas id="frequency-chart"></canvas>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <h3>Tendências Temporais</h3>
+                        <canvas id="trends-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notificações -->
+            <section id="notifications" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bell"></i> Notificações</h2>
+                    <div class="section-actions">
+                        <button id="mark-all-read" class="btn btn-secondary">
+                            <i class="fas fa-check-double"></i> Marcar Todas como Lidas
+                        </button>
+                        <button id="clear-all-notifications" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Limpar Todas
+                        </button>
+                    </div>
+                </div>
+
+                <div class="notifications-container">
+                    <div class="notifications-filters">
+                        <div class="filter-group">
+                            <label>Filtrar por tipo:</label>
+                            <select id="notification-type-filter">
+                                <option value="all">Todas</option>
+                                <option value="prediction">Jogos Recomendados</option>
+                                <option value="result">Resultados</option>
+                                <option value="alert">Alertas</option>
+                                <option value="system">Sistema</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Status:</label>
+                            <select id="notification-status-filter">
+                                <option value="all">Todas</option>
+                                <option value="unread">Não Lidas</option>
+                                <option value="read">Lidas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="notifications-list" id="notifications-list">
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Carregando notificações...</p>
+                        </div>
+                    </div>
+
+                    <div class="notifications-pagination">
+                        <button id="load-more-notifications" class="btn btn-outline">
+                            <i class="fas fa-plus"></i> Carregar Mais
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Configurações de Notificações -->
+                <div class="notification-settings">
+                    <h3><i class="fas fa-cog"></i> Configurações de Notificações</h3>
+                    <form id="notification-settings-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="enable-browser-notifications" checked>
+                                    <span class="checkmark"></span>
+                                    Notificações do Navegador
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="enable-sound-notifications" checked>
+                                    <span class="checkmark"></span>
+                                    Notificações Sonoras
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="notify-new-predictions" checked>
+                                    <span class="checkmark"></span>
+                                    Novos Jogos Recomendados
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="notify-results" checked>
+                                    <span class="checkmark"></span>
+                                    Resultados de Jogos
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="notify-performance-alerts" checked>
+                                    <span class="checkmark"></span>
+                                    Alertas de Performance
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="notify-system-updates">
+                                    <span class="checkmark"></span>
+                                    Atualizações do Sistema
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Salvar Configurações
+                            </button>
+                            <button type="button" id="test-notification" class="btn btn-secondary">
+                                <i class="fas fa-bell"></i> Testar Notificação
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Configuration Section -->
+            <section id="config" class="section">
+                <h2>Configurações</h2>
+                <div class="config-grid">
+                    <div class="config-card">
+                        <h3>Parâmetros de Predição</h3>
+                        <form id="config-form">
+                            <div class="form-group">
+                                <label for="confidence-threshold">Limite de Confiança:</label>
+                                <input type="range" id="confidence-threshold" min="0" max="100" value="70">
+                                <span id="confidence-value">70%</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="historical-depth">Profundidade Histórica (jogos):</label>
+                                <input type="range" id="historical-depth" min="10" max="500" value="100" class="slider">
+                                <span id="historical-value" class="slider-value">100</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pattern-weight">Peso dos Padrões:</label>
+                                <input type="range" id="pattern-weight" min="0" max="100" value="50" class="slider">
+                                <span id="pattern-value" class="slider-value">50%</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="frequency-weight">Peso da Frequência:</label>
+                                <input type="range" id="frequency-weight" min="0" max="100" value="30" class="slider">
+                                <span id="frequency-value" class="slider-value">30%</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="trend-weight">Peso das Tendências:</label>
+                                <input type="range" id="trend-weight" min="0" max="100" value="20" class="slider">
+                                <span id="trend-value" class="slider-value">20%</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="prediction-count">Número de Jogos Recomendados:</label>
+                                <select id="prediction-count" class="form-select">
+                                    <option value="1">1 jogo recomendado</option>
+                                    <option value="3" selected>3 jogos recomendados</option>
+                    <option value="5">5 jogos recomendados</option>
+                    <option value="10">10 jogos recomendados</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="algorithm-mode">Modo do Algoritmo:</label>
+                                <select id="algorithm-mode" class="form-select">
+                                    <option value="balanced" selected>Balanceado</option>
+                                    <option value="conservative">Conservador</option>
+                                    <option value="aggressive">Agressivo</option>
+                                    <option value="experimental">Experimental</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="refresh-interval">Intervalo de Atualização (segundos):</label>
+                                <input type="number" id="refresh-interval" min="10" max="300" value="30">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="exclude-recent" class="form-checkbox"> Excluir Números Recentes (últimos 5 sorteios)
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="include-hot-numbers" class="form-checkbox" checked> Incluir Números Quentes
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="use-machine-learning" class="form-checkbox" checked> Usar Machine Learning
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="auto-update" checked> Atualização Automática
+                                </label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="enable-websocket" checked> Notificações em Tempo Real
+                                </label>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" id="reset-params" class="btn-secondary">Restaurar Padrão</button>
+                                <button type="submit" class="btn-primary">Salvar Configurações</button>
+                                <button type="button" id="apply-params" class="btn-success">Aplicar e Gerar</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="config-card">
+                        <h3>Notificações</h3>
+                        <div class="notification-settings">
+                            <label>
+                                <input type="checkbox" id="notify-predictions" checked> Novos jogos recomendados
+                            </label>
+                            <label>
+                                <input type="checkbox" id="notify-alerts" checked> Alertas de performance
+                            </label>
+                            <label>
+                                <input type="checkbox" id="notify-reports"> Relatórios diários
+                            </label>
+                            <label>
+                                <input type="checkbox" id="notify-errors" checked> Erros do sistema
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="config-card">
+                        <h3>Exportar Dados</h3>
+                        <div class="export-options">
+                            <button class="btn-secondary" onclick="app.exportData('json')">Exportar JSON</button>
+                            <button class="btn-secondary" onclick="app.exportData('csv')">Exportar CSV</button>
+                            <button class="btn-secondary" onclick="app.clearCache()">Limpar Cache</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Notifications Panel -->
+    <div id="notifications-panel" class="notifications-panel">
+        <div class="notifications-header">
+            <h3><i class="fas fa-bell"></i> Notificações</h3>
+            <button id="clear-notifications" class="btn-text">
+                <i class="fas fa-trash"></i> Limpar
+            </button>
+        </div>
+        <div class="notifications-list" id="notifications-list">
+            <!-- Notificações carregadas dinamicamente -->
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Inicializar aplicação quando a página carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new LotofacilApp();
+            window.app.init();
+        });
+    </script>
+</body>
+</html>

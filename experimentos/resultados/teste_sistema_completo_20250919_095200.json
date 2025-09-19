@@ -1,0 +1,51 @@
+{
+  "timestamp": "20250919_095159",
+  "testes_realizados": [
+    "inicio_teste_completo",
+    "carregamento_dados",
+    "teste_modelos",
+    "validacao_arquivos",
+    "teste_performance",
+    "geracao_recomendacoes"
+  ],
+  "modelos_testados": {
+    "ensemble_otimizado": {
+      "arquivo": "ensemble_otimizado.pkl",
+      "tamanho_arquivo": 17532896,
+      "tipo": "<class 'sklearn.ensemble._voting.VotingClassifier'>",
+      "status": "carregado_com_sucesso",
+      "predicao_teste": "erro: Feature shape mismatch, expected: 81, got 15"
+    }
+  },
+  "performance_geral": {
+    "tempo_carregamento_modelos": 0.21288824081420898,
+    "tempo_predicao": 0,
+    "uso_memoria": 3.76953125,
+    "status_geral": "ok"
+  },
+  "validacoes": {
+    "arquivos_resultados": {
+      "otimizacoes_implementadas_20250919_095045.json": {
+        "tamanho": 1110,
+        "chaves_principais": [
+          "timestamp",
+          "modelos_treinados",
+          "metricas_otimizadas",
+          "features_engineered",
+          "ensemble_performance",
+          "melhor_modelo"
+        ],
+        "status": "válido",
+        "ensemble_accuracy": 1.0
+      }
+    }
+  },
+  "recomendacoes": [
+    "✅ Todos os modelos foram carregados com sucesso",
+    "🔄 Implementar monitoramento contínuo de performance",
+    "📊 Configurar logging detalhado para produção",
+    "🎯 Testar com dados reais de produção",
+    "🔒 Implementar validação de entrada robusta",
+    "⚡ Considerar cache para predições frequentes"
+  ]
+}

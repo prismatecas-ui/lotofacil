@@ -1,0 +1,25 @@
+{
+  "timestamp": "20250919_101448",
+  "total_concursos": 3490,
+  "concurso_min": 1,
+  "concurso_max": 3490,
+  "data_min": "01/02/2007",
+  "data_max": "31/12/2024",
+  "integridade": {
+    "colunas_faltantes": [],
+    "valores_nulos": 0,
+    "bolas_invalidas": 0
+  },
+  "ganhadores": {
+    "com_ganhadores": 3081,
+    "sem_ganhadores": 409,
+    "percentual_com_ganhadores": 88.28
+  },
+  "distribuicao_bolas": {
+    "mais_sorteada": 20,
+    "freq_mais_sorteada": 2178,
+    "menos_sorteada": 16,
+    "freq_menos_sorteada": 1998,
+    "media_sorteios": 2094.0
+  }
+}

@@ -1,0 +1,31 @@
+============================================================
+API PREDIÇÕES LOTOFÁCIL - RELATÓRIO DE INICIALIZAÇÃO
+============================================================
+Data/Hora: 19/09/2025 09:09:00
+Configuração: ./api/config_api.json
+
+CONFIGURAÇÃO DA API:
+  Host: 0.0.0.0
+  Porta: 5000
+  Debug: False
+
+CONFIGURAÇÃO DO CACHE:
+  Habilitado: True
+  Tamanho máximo: 1000
+  TTL (segundos): 300
+
+MODELOS CONFIGURADOS:
+  tensorflow_basico:
+    Tipo: tensorflow
+    Ativo: True
+    Preload: True
+  algoritmos_avancados:
+    Tipo: algoritmos_avancados
+    Ativo: True
+    Preload: False
+  analise_padroes:
+    Tipo: analise_padroes
+    Ativo: True
+    Preload: False
+
+============================================================

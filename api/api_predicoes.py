@@ -174,7 +174,8 @@ class GerenciadorModelos:
                         modelo.carregar_modelo(config['caminho'])
                     else:
                         logger.warning(f"Modelo TensorFlow {nome} não encontrado, criando novo")
-                        modelo.criar_modelo()
+                        modelo.model = modelo.criar_modelo_avancado()
+                        modelo.compile_model()
                 
                 elif tipo == TipoModelo.ALGORITMOS_AVANCADOS:
                     modelo = AlgoritmosAvancados()
@@ -482,19 +483,29 @@ class APIPredicoes:
             tipo_modelo = config_modelo['tipo']
             
             if tipo_modelo == TipoModelo.TENSORFLOW:
-                predicao = modelo.predizer(entrada)
-                if isinstance(predicao, tuple):
-                    probabilidades = predicao[0][0]
+                # Converter números para vetor binário (formato esperado pelo modelo)
+                if numeros_entrada:
+                    vetor_entrada = [0] * 25
+                    for num in numeros_entrada:
+                        if 1 <= num <= 25:
+                            vetor_entrada[num - 1] = 1
+                    entrada_modelo = np.array([vetor_entrada])
                 else:
+                    entrada_modelo = entrada
+                
+                predicao = modelo.model.predict(entrada_modelo)
+                if isinstance(predicao, np.ndarray):
                     probabilidades = predicao[0]
+                else:
+                    probabilidades = predicao
             
             elif tipo_modelo == TipoModelo.ALGORITMOS_AVANCADOS:
                 # Usar ensemble do modelo avançado
-                probabilidades = modelo.predizer_ensemble(entrada)[0]
+                probabilidades = modelo.predict_with_ensemble(numeros_entrada if numeros_entrada else list(range(1, 16)))
             
             elif tipo_modelo == TipoModelo.ANALISE_PADROES:
                 # Usar predição baseada em padrões
-                numeros_preditos = modelo.predizer_numeros()
+                numeros_preditos = modelo.predizer_proximos_numeros(numeros_entrada if numeros_entrada else list(range(1, 16)))
                 probabilidades = [0.0] * 25
                 for num in numeros_preditos:
                     if 1 <= num <= 25:
@@ -505,7 +516,7 @@ class APIPredicoes:
             
             # Selecionar top 15 números
             indices_ordenados = np.argsort(probabilidades)[::-1]
-            numeros_preditos = [i + 1 for i in indices_ordenados[:15]]
+            numeros_preditos = [int(i + 1) for i in indices_ordenados[:15]]
             probs_selecionadas = [float(probabilidades[i]) for i in indices_ordenados[:15]]
             
             # Calcular confiança

@@ -1,0 +1,51 @@
+{
+  "timestamp": "2025-09-19T09:46:59.604329",
+  "modelos_treinados": [
+    {
+      "nome": "XGBoost Otimizado",
+      "accuracy": 1.0,
+      "tipo": "Gradient Boosting"
+    },
+    {
+      "nome": "Random Forest Otimizado",
+      "accuracy": 1.0,
+      "tipo": "Ensemble Tree"
+    },
+    {
+      "nome": "LSTM Temporal",
+      "accuracy": 0.4244185984134674,
+      "tipo": "Deep Learning"
+    }
+  ],
+  "metricas_otimizadas": {
+    "cv_temporal": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "metricas_finais": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0
+    }
+  },
+  "features_engineered": [
+    "Soma dos números",
+    "Quantidade de pares/ímpares",
+    "Distribuição por faixas",
+    "Sequências consecutivas",
+    "Features de histórico (janelas 3, 5, 10)"
+  ],
+  "ensemble_performance": {
+    "accuracy": 1.0,
+    "modelos_incluidos": [
+      "XGBoost",
+      "RandomForest"
+    ],
+    "melhoria_vs_melhor_individual": 0.0
+  },
+  "melhor_modelo": {
+    "tipo": "Ensemble",
+    "accuracy": 1.0
+  }
+}

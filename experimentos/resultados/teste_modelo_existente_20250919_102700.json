@@ -1,0 +1,88 @@
+{
+  "timestamp": "20250919_102700",
+  "teste_realizado": "Modelo Ensemble Existente",
+  "dados": {
+    "total_concursos": 3490,
+    "total_features": 81,
+    "treino_amostras": 2792,
+    "teste_amostras": 698,
+    "ganhadores_teste": 570
+  },
+  "modelo": {
+    "tipo": "VotingClassifier",
+    "estimadores": [
+      "XGBoost",
+      "RandomForest"
+    ],
+    "path": "modelo/optimized_models/ensemble_otimizado.pkl"
+  },
+  "metricas": {
+    "acuracia_geral": 0.0,
+    "acuracia_formatada": "0.0%",
+    "relatorio_classificacao": {
+      "0": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 128.0
+      },
+      "1": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 570.0
+      },
+      "3": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 0.0
+      },
+      "accuracy": 0.0,
+      "macro avg": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 698.0
+      },
+      "weighted avg": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 698.0
+      }
+    },
+    "matriz_confusao": [
+      [
+        0,
+        0,
+        128
+      ],
+      [
+        0,
+        0,
+        570
+      ],
+      [
+        0,
+        0,
+        0
+      ]
+    ],
+    "probabilidades": {
+      "media": 3.0,
+      "maxima": 3.0,
+      "minima": 3.0,
+      "desvio_padrao": 0.0
+    }
+  },
+  "analise": {
+    "status": "TESTADO",
+    "observacoes": [
+      "Modelo testado com 698 amostras de teste",
+      "Acurácia atual: 0.0%",
+      "Meta desejada: 85-90% de acurácia",
+      "Necessário retreinamento para melhorar performance"
+    ]
+  }
+}
