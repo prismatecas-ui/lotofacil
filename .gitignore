@@ -138,5 +138,44 @@ backups/
 *.joblib
 *.h5
 *.model
-modelos/*.pkl
-experimentos/modelos/*.pkl
+*.onnx
+*.pb
+modelos/
+experimentos/modelos/
+modelo/optimized_models/
+
+# Dados grandes e combinações
+combinacoes/
+combinacoes.csv
+*.csv.gz
+*.parquet
+
+# Cache e arquivos temporários adicionais
+cache/
+*.cache
+__pycache__/
+.pytest_cache/
+.coverage
+.tox/
+
+# Logs específicos do sistema
+api_predicoes.log
+dataset_generation.log
+error_log.log
+monitor_*.log
+
+# Arquivos de sistema e IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Arquivos de configuração local
+config_local.py
+settings_local.py
+.env.local
+.env.development
+.env.production
