@@ -113,7 +113,6 @@ atualizar_automatico.py
 check_tables.py
 executar_migracao.py
 investigar_dados_sqlite.py
-jogar.py
 test_migration.py
 teste_integracao_modelos.py
 teste_simples.py
@@ -133,3 +132,11 @@ backup/
 backups/
 *.bak
 *.backup
+
+# Modelos de Machine Learning (arquivos grandes)
+*.pkl
+*.joblib
+*.h5
+*.model
+modelos/*.pkl
+experimentos/modelos/*.pkl
